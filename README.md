@@ -10,6 +10,9 @@ the wished version rather than the one provided by Debian.
 It exposes the whole `/etc/salt` as a volume, so that you can control the
 whole configuration (including `minion_id`), preseed keys, etc (à la Salt Cloud)
 
+It brings systemd to manage units on the host machine, this will require to
+give some privileged to the container and map dbus directory (``/var/run/dbus``)
+
 Please simply read `Dockerfile` for this version specifics.
 The branch name is intended to be the major Salt release, although obviously
 more branches can exist.
