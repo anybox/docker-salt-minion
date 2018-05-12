@@ -18,7 +18,13 @@ RUN apt update \
         systemd \
         # to use git.latest state
         git \
-    && apt-key add /root/saltstack.asc
+    && apt-key add /root/saltstack.asc \
+    # get docker client
+    && curl -o docker.tgz https://download.docker.com/linux/static/stable/x86_64/docker-17.12.1-ce.tgz \
+    && tar -xzf docker.tgz \
+    && mv docker/docker /usr/bin/docker \
+    && chmod +x /usr/bin/docker \
+    && rm -rf docker*
 
 ADD saltstack.list /etc/apt/sources.list.d/salstack.list
 
