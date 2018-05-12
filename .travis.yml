@@ -10,8 +10,8 @@ services:
 
 script:
   - docker build -t $SALT_MINION_IMAGE:$CURRENT_BUILD_SALT_MINION_TAG .
-  - docker run $SALT_MINION_IMAGE:$CURRENT_BUILD_SALT_MINION_TAG salt-minion --version
-  - docker run $SALT_MINION_IMAGE:$CURRENT_BUILD_SALT_MINION_TAG docker version
+  - docker run --rm $SALT_MINION_IMAGE:$CURRENT_BUILD_SALT_MINION_TAG salt-minion --version
+  - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock $SALT_MINION_IMAGE:$CURRENT_BUILD_SALT_MINION_TAG docker version
 
 after_success:
   - if [ ! -z "$TRAVIS_PULL_REQUEST" ]; then docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD && docker push $SALT_MINION_IMAGE:$CURRENT_BUILD_SALT_MINION_TAG; fi
