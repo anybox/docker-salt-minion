@@ -1,0 +1,17 @@
+sudo: required
+
+env:
+  global:
+    - SALT_MINION_IMAGE=anybox/salt-minion
+    - CURRENT_BUILD_SALT_MINION_TAG=2017.7
+
+services:
+  - docker
+
+script:
+  - docker build -t $SALT_MINION_IMAGE:$CURRENT_BUILD_SALT_MINION_TAG .
+  - docker run $SALT_MINION_IMAGE:$CURRENT_BUILD_SALT_MINION_TAG salt-minion --version
+  - docker run $SALT_MINION_IMAGE:$CURRENT_BUILD_SALT_MINION_TAG docker version
+
+after_success:
+  - if [ ! -z "$TRAVIS_PULL_REQUEST" ]; then docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD && docker push $SALT_MINION_IMAGE:$CURRENT_BUILD_SALT_MINION_TAG; fi
